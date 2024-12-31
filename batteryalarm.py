@@ -1,7 +1,7 @@
-
 import psutil
 import time
 import winsound
+import ctypes
 
 def set_battery_alarm(threshold):
     """
@@ -23,17 +23,20 @@ def set_battery_alarm(threshold):
             print("Battery level is low! Please plug in your charger.")
             # Play a beep sound
             winsound.Beep(1000, 1000)  # frequency, duration in milliseconds
+            # Show a pop-up message
+            ctypes.windll.user32.MessageBoxW(0, "Battery level is low! Please plug in your charger.", "Battery Alarm", 1)
             time.sleep(2)
-        elif percent >= 30 and power_plugged:
+        elif percent >= 70 and power_plugged:
             print("Battery level is above 30% it is overcharging")
             winsound.Beep(1000,1000)
+            ctypes.windll.user32.MessageBoxW(0, "Battery level is above 70%! Please unplug your charger.", "Battery Alarm", 1)
             time.sleep(2)
-
-        else : # Wait for 60 seconds before checking again
+        else:
+            # Wait for 60 seconds before checking again
             time.sleep(30)
 
 # Example usage
-# Set the alarm for when battery percentage reaches 15% and not charging
+# Set the alarm for when battery percentage reaches 32% and not charging
 set_battery_alarm(32)
 
 
